@@ -1,12 +1,15 @@
 import React from 'react'
 import Card from './Card'
+import './Hand.css'
 
 const Hand = ({ playerCards }) => {
     return(
-        <div>
-            <h2>Hand:</h2>
+        <div className="deckContainer">
+            <h2>My hand:</h2>
             {playerCards.map(card => 
-                <div key={card.value + " - " + card.suit}>{card.value} - {card.suit}</div>
+                <div className="card">
+                    <img width="128" alt={card.value+""+card.suit} src={"./images/cards/"+card.value+""+card.suit+".png"}></img>
+                </div>
             )}
         </div>
     )

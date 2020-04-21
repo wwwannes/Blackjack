@@ -1,0 +1,9 @@
+.deckContainer{
+    width: 100%;
+    text-align: center;
+}
+.card{
+    display: inline-block;
+    margin-left: 15px;
+    margin-right: 15px;
+}

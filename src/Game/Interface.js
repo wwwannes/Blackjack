@@ -1,7 +1,9 @@
 import React from 'react';
 import _ from 'lodash';
 
-const Interface = ({ deck, playerCards = [], hitMeAgain, playerTotal }) => {
+const Interface = ({ deck, playerCards = [], hitMeAgain }) => {
+
+    let playerTotal = calculateTotal(playerCards);
 
     function calculateTotal(hand){
         let total = 0;
@@ -26,7 +28,12 @@ const Interface = ({ deck, playerCards = [], hitMeAgain, playerTotal }) => {
 
     return(
         <div>
-            <h2>Player Total: {calculateTotal(playerCards)}</h2>
+            <h2>Player Total: {playerTotal}</h2>
+            {
+                playerTotal > 21 ? <h1>Busted</h1> 
+                : playerTotal == 21 ? <h1>You won!!!</h1>
+                : null
+            }
             <h2>Deck:</h2>
             {deck.map(card => 
                 <div>{card.value} - {card.suit}</div>
