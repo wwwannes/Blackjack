@@ -5,9 +5,9 @@ import Deck from './Deck';
 import Hand from './Hand';
 import Interface from "./Interface";
 import Outcome from './Outcome'
-import { initializeDeck, shuffleDeck, addCard, removeCard } from './actions';
+import { initializeDeck, shuffleDeck, addCard } from './actions';
 
-const Table = ({deck = [], playerCards = [], dealerCards = [], setDeckOnLoad, setRandomDeck, hitMeAgain, takeCardFromDeck}) => {
+const Table = ({deck = [], playerCards = [], setDeckOnLoad, hitMeAgain}) => {
     useEffect(() => {
         setDeckOnLoad();
     }, []);
@@ -15,7 +15,7 @@ const Table = ({deck = [], playerCards = [], dealerCards = [], setDeckOnLoad, se
     return(<div>
         {/*<Deck deck={deck}/>*/}
         <Hand playerCards={playerCards}/>
-        <Interface deck={deck} hitMeAgain={hitMeAgain} takeCardFromDeck={takeCardFromDeck} playerCards={playerCards}/>
+        <Interface deck={deck} playerCards={playerCards} hitMeAgain={hitMeAgain}/>
         {/*<Outcome/>*/}
     </div>);
 };
@@ -23,15 +23,14 @@ const Table = ({deck = [], playerCards = [], dealerCards = [], setDeckOnLoad, se
 const mapStateToProps = state => ({
     deck: state.deck,
     playerCards: state.playerCards,
-    dealerCards: state.dealerCards
+    dealerCards: state.dealerCards,
 });
 
 const mapDispatchToProps = dispatch => (
     {
         setDeckOnLoad: () => dispatch(initializeDeck()),
         setRandomDeck: cards => dispatch(shuffleDeck(cards)),
-        hitMeAgain: (deck, playerCards) => dispatch(addCard(deck, playerCards)),
-        takeCardFromDeck: deck => dispatch(removeCard(deck))
+        hitMeAgain: (deck, playerCards) => dispatch(addCard(deck, playerCards))
     }
 );
 

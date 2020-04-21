@@ -2,7 +2,6 @@ import _ from 'lodash';
 import {
     INITIALIZE_DECK,
     SHUFFLE_DECK,
-    REMOVE_CARD,
     DEAL_CARD
 } from './actions'
 
@@ -19,9 +18,6 @@ export const deck = (state = [], action) => {
             const shuffledDeck = _.shuffle(payload.deck);
             console.log("deck SHUFFLE_DECK")
             return shuffledDeck;
-        case REMOVE_CARD:
-            console.log("deck REMOVE_CARD");
-            return _.remove(state, state[0]);
         default:
             console.log("deck default")
             return state;
@@ -37,7 +33,10 @@ export const playerCards = (state = [], action) => {
                 'value': payload.deck[0].value,
                 'suit': payload.deck[0].suit
             };
-            console.log("playerCards DEAL_CARD");
+
+            {/* Remove card from the deck */}
+            _.remove(payload.deck, payload.deck[0]);
+
             return state.concat(newCard);
         default:
             console.log("playerCards default");
