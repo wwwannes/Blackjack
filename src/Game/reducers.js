@@ -3,22 +3,15 @@ import _ from 'lodash';
 import jsonDeck from '../deck.json';
 import {
     INITIALIZE_DECK,
-    SHUFFLE_DECK,
     DEAL_CARD,
     DEAL_CARD_DEALER,
 } from './actions'
 
 export const deck = (state = [], action) => {
-    const {type, payload} = action;
-
+    const {type} = action;
     switch(type){
         case INITIALIZE_DECK:
-            console.log("deck INITIALIZE_DECK")
             return _.shuffle(JSON.parse(JSON.stringify(jsonDeck)).cards);
-        case SHUFFLE_DECK:
-            const shuffledDeck = _.shuffle(payload.deck);
-            console.log("deck SHUFFLE_DECK")
-            return shuffledDeck;
         default:
             console.log("deck default")
             return state;
@@ -50,12 +43,17 @@ export const dealerCards = (state = [], action) => {
 }
 
 function addCardToHand(card){
+
+    {/* Shuffle deck before addiing new card to hand */}
+    const shuffledDeck = _.shuffle(card.deck);
+
     const newCard = {
-        'value': card.deck[0].value,
-        'suit': card.deck[0].suit
+        'value': shuffledDeck[0].value,
+        'suit': shuffledDeck[0].suit
     };
 
-    _.remove(card.deck, card.deck[0]);
+    {/* Remove card from deck */}
+    _.remove(card.deck, shuffledDeck[0]);
 
     return newCard;
 }

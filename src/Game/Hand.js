@@ -3,6 +3,8 @@ import Card from './Card'
 import './Hand.css'
 
 const Hand = ({ playerCards, dealerCards }) => {
+    {/* As a Hand can be for the player OR dealer, a check is required to return the right data */}
+
     return(
         <div>
             { 
