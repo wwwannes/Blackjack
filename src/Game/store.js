@@ -1,12 +1,13 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { deck, playerCards, dealerCards } from './reducers';
+import { deck, playerCards, dealerCards, isPlaying } from './reducers';
 
 const reducers = {
     deck,
     playerCards,
-    dealerCards
+    dealerCards,
+    isPlaying
 };
 
 const rootReducer = combineReducers(reducers);

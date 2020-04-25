@@ -1,23 +1,43 @@
 import React from 'react';
 import _ from 'lodash';
 
-const Interface = ({ deck, playerCards = [], dealerCards = [], hitMeAgain, hitDealerAgain }) => {
+const Interface = ({ isPlaying, deck, playerCards = [], dealerCards = [], hitMeAgain, hitDealerAgain, stopPlaying }) => {
+
+    function startGame(){
+        hitMeAgain(deck, playerCards);
+        hitDealerAgain(deck, dealerCards);
+        hitMeAgain(deck, playerCards);
+        hitDealerAgain(deck, dealerCards);
+    }
+    
     return(
         <div>
-            <h2>Deck:</h2>
-            {deck.map(card => 
-                <div>{card.value} - {card.suit}</div>
-            )}
-
-            <button onClick={() => 
-                 hitMeAgain(deck, playerCards)
-            }>Hit me!</button>
-            <button onClick={() => 
-                hitMeAgain(deck, playerCards)
-            }>Stay</button>
-            <button onClick={() => 
-                hitDealerAgain(deck, dealerCards)
-            }>Hit Dealer!</button>
+            {
+            _.size(playerCards) === 0 && _.size(dealerCards) === 0 ? 
+                <button onClick={() => 
+                    startGame()
+                }>Start game</button>
+                : null
+            }
+            { 
+            isPlaying && _.size(playerCards) > 0 && _.size(dealerCards) > 0 ?
+                <div>
+                    <button onClick={() => 
+                        hitMeAgain(deck, playerCards)
+                    }>Hit me!</button>
+                    <button onClick={() => 
+                        stopPlaying()
+                    }>Stay</button>
+                </div>
+            : null
+            }
+            { 
+            !isPlaying && _.size(playerCards) > 0 && _.size(dealerCards) > 0 ?
+                <button onClick={() => 
+                    hitDealerAgain(deck, dealerCards)
+                }>Hit Dealer!</button>
+                : null
+            }
 
 
             {/*{
