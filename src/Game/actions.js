@@ -12,7 +12,13 @@ export const shuffleDeck = deck => ({
 });
 
 export const DEAL_CARD = 'DEAL_CARD';
-export const addCard = (deck, playerCards) => ({
+export const addCard = (deck, hand) => ({
     type: DEAL_CARD,
-    payload: { deck, playerCards }
+    payload: { deck, hand }
+});
+
+export const DEAL_CARD_DEALER = 'DEAL_CARD_DEALER';
+export const addCardDealer = (deck, hand) => ({
+    type: DEAL_CARD_DEALER,
+    payload: { deck, hand }
 });

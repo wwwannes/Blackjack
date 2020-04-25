@@ -1,0 +1,14 @@
+.dealerCards,
+.playerCards{
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+.dealerCards{
+    top: 10px;
+}
+
+.playerCards{
+    bottom: 10px;
+}

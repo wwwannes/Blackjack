@@ -1,37 +1,42 @@
 import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
 
-import Deck from './Deck';
 import Hand from './Hand';
 import Interface from "./Interface";
 import Outcome from './Outcome'
-import { initializeDeck, shuffleDeck, addCard } from './actions';
+import { initializeDeck, shuffleDeck, addCard, addCardDealer } from './actions';
 
-const Table = ({deck = [], playerCards = [], setDeckOnLoad, hitMeAgain}) => {
+import "./Table.css";
+
+const Table = ({ deck = [], playerCards = [], dealerCards = [], setDeckOnLoad, hitMeAgain, hitDealerAgain }) => {
     useEffect(() => {
         setDeckOnLoad();
     }, []);
 
-    return(<div>
-        {/*<Deck deck={deck}/>*/}
-        <Hand playerCards={playerCards}/>
-        <Interface deck={deck} playerCards={playerCards} hitMeAgain={hitMeAgain}/>
-        {/*<Outcome/>*/}
-    </div>);
-};
+    return(
+        <div>
+            <Outcome playerCards={playerCards} dealerCards={dealerCards}/>
+            <div className="dealerCards">
+                <Hand dealerCards={dealerCards}/>
+            </div>
+            <div className="playerCards">
+                <Hand playerCards={playerCards}/>
+            </div>
+            <Interface deck={deck} playerCards={playerCards} dealerCards={dealerCards} hitMeAgain={hitMeAgain} hitDealerAgain={hitDealerAgain}/>
+        </div>
+)};
 
 const mapStateToProps = state => ({
     deck: state.deck,
     playerCards: state.playerCards,
-    dealerCards: state.dealerCards,
+    dealerCards: state.dealerCards
 });
 
-const mapDispatchToProps = dispatch => (
-    {
-        setDeckOnLoad: () => dispatch(initializeDeck()),
-        setRandomDeck: cards => dispatch(shuffleDeck(cards)),
-        hitMeAgain: (deck, playerCards) => dispatch(addCard(deck, playerCards))
-    }
-);
+const mapDispatchToProps = dispatch => ({
+    setDeckOnLoad: () => dispatch(initializeDeck()),
+    setRandomDeck: cards => dispatch(shuffleDeck(cards)),
+    hitMeAgain: (deck, playerCards) => dispatch(addCard(deck, playerCards)),
+    hitDealerAgain: (deck, dealerCards) => dispatch(addCardDealer(deck, dealerCards)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table);
