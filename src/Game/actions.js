@@ -4,19 +4,31 @@ export const initializeDeck = deck => ({
     payload: { deck }
 });
 
+export const INITIALIZE_PLAYER = 'INITIALIZE_PLAYER';
+export const initializePlayer = player => ({
+    type: INITIALIZE_PLAYER,
+    payload: { player }
+});
+
+export const INITIALIZE_DEALER = 'INITIALIZE_DEALER';
+export const initializeDealer = dealer => ({
+    type: INITIALIZE_DEALER,
+    payload: { dealer }
+});
+
 export const PLAYER_STOPPED = 'PLAYER_STOPPED';
 export const playerStopped = () => ({
     type: PLAYER_STOPPED
 });
 
 export const DEAL_CARD = 'DEAL_CARD';
-export const addCard = (deck, hand) => ({
+export const addCard = (deck, player) => ({
     type: DEAL_CARD,
-    payload: { deck, hand }
+    payload: { deck, player }
 });
 
 export const DEAL_CARD_DEALER = 'DEAL_CARD_DEALER';
-export const addCardDealer = (deck, hand) => ({
+export const addCardDealer = (deck, dealer) => ({
     type: DEAL_CARD_DEALER,
-    payload: { deck, hand }
+    payload: { deck, dealer }
 });

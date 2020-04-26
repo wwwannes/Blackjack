@@ -1,29 +1,29 @@
 import React from 'react';
 import _ from 'lodash';
 
-const Interface = ({ isPlaying, deck, playerCards = [], dealerCards = [], hitMeAgain, hitDealerAgain, stopPlaying }) => {
+const Interface = ({ deck, hitMeAgain, hitDealerAgain, stopPlaying, player, dealer }) => {
 
     function startGame(){
-        hitMeAgain(deck, playerCards);
-        hitDealerAgain(deck, dealerCards);
-        hitMeAgain(deck, playerCards);
-        hitDealerAgain(deck, dealerCards);
+        hitMeAgain(deck, player.hand);
+        hitDealerAgain(deck, dealer.hand);
+        hitMeAgain(deck, player.hand);
+        hitDealerAgain(deck, dealer.hand);
     }
     
     return(
-        <div>
+        <div style={{textAlign: 'center'}}>
             {
-            _.size(playerCards) === 0 && _.size(dealerCards) === 0 ? 
+            _.size(player.hand) === 0 && _.size(dealer.hand) === 0 ? 
                 <button onClick={() => 
                     startGame()
                 }>Start game</button>
                 : null
             }
             { 
-            isPlaying && _.size(playerCards) > 0 && _.size(dealerCards) > 0 ?
+            player.isPlaying && _.size(player.hand) > 0 && _.size(dealer.hand) > 0 ?
                 <div>
                     <button onClick={() => 
-                        hitMeAgain(deck, playerCards)
+                        hitMeAgain(deck, player.hand)
                     }>Hit me!</button>
                     <button onClick={() => 
                         stopPlaying()
@@ -32,33 +32,12 @@ const Interface = ({ isPlaying, deck, playerCards = [], dealerCards = [], hitMeA
             : null
             }
             { 
-            !isPlaying && _.size(playerCards) > 0 && _.size(dealerCards) > 0 ?
+            !player.isPlaying && _.size(player.hand) > 0 && _.size(dealer.hand) > 0 ?
                 <button onClick={() => 
-                    hitDealerAgain(deck, dealerCards)
+                    hitDealerAgain(deck, dealer.hand)
                 }>Hit Dealer!</button>
                 : null
             }
-
-
-            {/*{
-                playerTotal < 21 ?
-                    <div>
-                        <button onClick={() => 
-                            hitMeAgain(deck, playerCards)
-                        }>Hit me!</button>
-                        <button onClick={() => 
-                            hitMeAgain(deck, playerCards)
-                        }>Stay</button>
-                    </div>
-                    : null
-            }
-            {
-                dealerTotal < 21 ?
-                    <button onClick={() => 
-                        hitDealerAgain(deck, dealerCards)
-                    }>Hit Dealer!</button>
-                    : null
-            }*/}
         </div>
     );
 }

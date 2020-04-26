@@ -3,20 +3,12 @@ import _ from 'lodash';
 import jsonDeck from '../deck.json';
 import {
     INITIALIZE_DECK,
+    INITIALIZE_PLAYER,
+    INITIALIZE_DEALER,
     PLAYER_STOPPED,
     DEAL_CARD,
     DEAL_CARD_DEALER,
 } from './actions'
-
-export const isPlaying = (state = [], action) => {
-    const {type} = action;
-    switch(type){
-        case PLAYER_STOPPED:
-            return false;
-        default:
-            return state;
-    }
-}
 
 export const deck = (state = [], action) => {
     const {type} = action;
@@ -28,25 +20,52 @@ export const deck = (state = [], action) => {
     }
 }
 
-export const playerCards = (state = [], action) => {
+export const player = (state = [], action) => {
     const {type, payload} = action;
 
     switch(type){
+        case INITIALIZE_PLAYER:
+            return {
+                ...state,
+                isPlaying: true,
+                hand: [],
+                total: 0
+            };
         case DEAL_CARD:
-            return state.concat( addCardToHand(payload) );
+            const card = addCardToHand(payload);
+            return{
+                ...state,
+                hand: state.hand.concat(card),
+                total: calculateTotal(card, state.total)
+            }
+        case PLAYER_STOPPED:
+            return {
+                ...state,
+                isPlaying: false
+            };
         default:
             return state;
     }
 }
 
-export const dealerCards = (state = [], action) => {
+export const dealer = (state = [], action) => {
     const {type, payload} = action;
 
-    console.log(state)
-
     switch(type){
+        case INITIALIZE_DEALER:
+            return {
+                ...state,
+                isPlaying: false,
+                hand: [],
+                total: 0
+            };
         case DEAL_CARD_DEALER:
-            return state.concat( addCardToHand(payload, true) );
+            const card = addCardToHand(payload);
+            return{
+                ...state,
+                hand: state.hand.concat(card),
+                total: calculateTotal(card, state.total)
+            }
         default:
             return state;
     }
@@ -54,7 +73,7 @@ export const dealerCards = (state = [], action) => {
 
 function addCardToHand(card, hidden = false){
 
-    {/* Shuffle deck before addiing new card to hand */}
+    {/* Shuffle deck before adding new card to hand */}
     const shuffledDeck = _.shuffle(card.deck);
 
     const newCard = {
@@ -67,4 +86,20 @@ function addCardToHand(card, hidden = false){
     _.remove(card.deck, shuffledDeck[0]);
 
     return newCard;
+}
+
+function calculateTotal(card, total){
+    if(card.value === "J" || card.value === "Q" || card.value === "K"){
+        total += 10
+    } else if(card.value === "A"){
+        if(total + 11 > 21){
+            total += 1;
+        } else {
+            total += 11;
+        }
+    } else {
+        total += card.value
+    }
+
+    return total;
 }

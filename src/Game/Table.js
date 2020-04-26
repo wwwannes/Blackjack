@@ -4,58 +4,63 @@ import { connect } from 'react-redux';
 import Hand from './Hand';
 import Interface from "./Interface";
 import Outcome from './Outcome'
-import { initializeDeck, addCard, addCardDealer, playerStopped } from './actions';
+import { initializeDeck, addCard, addCardDealer, playerStopped, initializePlayer, initializeDealer } from './actions';
 
 import "./Table.css";
 
 const Table = ({ 
-        isPlaying = true, 
-        deck = [], 
-        playerCards = [], 
-        dealerCards = [], 
+        player,
+        dealer,
+        deck, 
         setDeckOnLoad, 
         hitMeAgain, 
         hitDealerAgain, 
-        stopPlaying 
+        stopPlaying,
+        setPlayerOnLoad,
+        setDealerOnLoad
     }) => {
+
     useEffect(() => {
         setDeckOnLoad();
+        setPlayerOnLoad();
+        setDealerOnLoad();
+        console.log(dealer, player)
     }, []);
 
     return(
         <div>
             <div className="dealerCards">
-                <Hand dealerCards={dealerCards} total={null} isPlaying={isPlaying}/>
+                <Hand dealer={dealer} player={false}/>
             </div>
             {/* Contains score logic */}
-            <Outcome playerCards={playerCards} dealerCards={dealerCards}/>
+            <Outcome dealer={dealer} player={player}/>
             {/* Contains the buttons */}
             <Interface 
-                isPlaying={isPlaying} 
                 deck={deck} 
-                playerCards={playerCards} 
-                dealerCards={dealerCards} 
                 hitMeAgain={hitMeAgain} 
                 hitDealerAgain={hitDealerAgain}
                 stopPlaying={stopPlaying}
+                player={player}
+                dealer={dealer}
             />
             <div className="playerCards">
-                <Hand playerCards={playerCards} total={null}/>
+                <Hand dealer={false} player={player}/>
             </div>
         </div>
 )};
 
 const mapStateToProps = state => ({
-    isPlaying: state.isPlaying,
     deck: state.deck,
-    playerCards: state.playerCards,
-    dealerCards: state.dealerCards
+    dealer: state.dealer,
+    player: state.player
 });
 
 const mapDispatchToProps = dispatch => ({
     setDeckOnLoad: () => dispatch(initializeDeck()),
-    hitMeAgain: (deck, playerCards) => dispatch(addCard(deck, playerCards)),
-    hitDealerAgain: (deck, dealerCards) => dispatch(addCardDealer(deck, dealerCards)),
+    setPlayerOnLoad: () => dispatch(initializePlayer()),
+    setDealerOnLoad: () => dispatch(initializeDealer()),
+    hitMeAgain: (deck, player) => dispatch(addCard(deck, player)),
+    hitDealerAgain: (deck, dealer) => dispatch(addCardDealer(deck, dealer)),
     stopPlaying: () => dispatch(playerStopped())
 });
 
