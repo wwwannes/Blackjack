@@ -32,7 +32,7 @@ const Interface = ({ deck, hitMeAgain, hitDealerAgain, stopPlaying, player, deal
             : null
             }
             { 
-            !player.isPlaying && _.size(player.hand) > 0 && _.size(dealer.hand) > 0 ?
+            !player.isPlaying && _.size(player.hand) > 0 && _.size(dealer.hand) > 0 && dealer.total < 21 ?
                 <button onClick={() => 
                     hitDealerAgain(deck, dealer.hand)
                 }>Hit Dealer!</button>

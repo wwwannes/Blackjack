@@ -61,10 +61,21 @@ export const dealer = (state = [], action) => {
             };
         case DEAL_CARD_DEALER:
             const card = addCardToHand(payload);
+            let playing = false;
+            let totalCards = 0;
+
+            if(_.size(state.hand) >= 1 && _.size(state.hand) < 2 && !state.isPlaying){
+                totalCards = calculateTotal(state.hand[0], 0);
+            } else if(_.size(state.hand) >= 2){
+                playing = true;
+                totalCards = calculateTotal(card, state.total);
+            }
+
             return{
                 ...state,
                 hand: state.hand.concat(card),
-                total: calculateTotal(card, state.total)
+                total: totalCards,
+                isPlaying: playing
             }
         default:
             return state;

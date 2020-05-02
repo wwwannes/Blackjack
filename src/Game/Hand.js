@@ -6,6 +6,8 @@ import './Hand.css';
 const Hand = ({ dealer, player }) => {
     {/* As a Hand can be for the player OR dealer, a check is required to return the right data */}
 
+    console.log(dealer)
+
     return(
         <div>
             { 
